@@ -1,0 +1,240 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./styles/shadcn-base.css";
+@import "@fontsource-variable/inter";
+
+/* Tema escuro por classe: o hook use-theme aplica .dark seguindo o sistema ou a escolha da pessoa. */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Tokens de cor — padrão Apple (HIG), conferidos para WCAG 2.2 AA em tests/unit/contraste.test.ts.
+ * Fundo agrupado (grouped background) + superfícies brancas, como os Ajustes do iPhone.
+ * "tint" é a cor de destaque para TEXTO; "primary" é a mesma cor para PREENCHIMENTO
+ * (no escuro elas diferem, para o texto branco do botão e o texto azul passarem no contraste).
+ */
+:root {
+  --radius: 0.75rem;
+  --background: #f2f2f7;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #0066cc;
+  --primary-foreground: #ffffff;
+  --tint: #005bb8;
+  --secondary: #e9e9ee;
+  --secondary-foreground: #000000;
+  --muted: rgba(120, 120, 128, 0.12);
+  --muted-foreground: #636366;
+  --accent: rgba(120, 120, 128, 0.12);
+  --accent-foreground: #000000;
+  --destructive: #c00014;
+  --entrada: #1e7b34;
+  --aviso: #9a4f00;
+  --success: #34c759;
+  --trilho: rgba(120, 120, 128, 0.16);
+  --border: rgba(60, 60, 67, 0.18);
+  --input: rgba(120, 120, 128, 0.16);
+  --ring: #0066cc;
+  --chart-1: #0066cc;
+  --chart-2: #1e7b34;
+  --chart-3: #c45c00;
+  --chart-4: #7a3fc4;
+  --chart-5: #00838f;
+  /* entradas × saídas nos gráficos: azul × laranja, validados para daltonismo (dataviz) */
+  --serie-entrada: #0066cc;
+  --serie-saida: #c45c00;
+  --sidebar: #f7f7fa;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #0066cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(120, 120, 128, 0.12);
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: rgba(60, 60, 67, 0.14);
+  --sidebar-ring: #0066cc;
+  /* materiais (barras translúcidas) */
+  --barra: rgba(249, 249, 249, 0.82);
+  --barra-solida: #f9f9f9;
+  /* opção escolhida no controle segmentado (iOS: branco no claro, cinza no escuro) */
+  --segmento: #ffffff;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #1c1c1e;
+  --card-foreground: #ffffff;
+  --popover: #2c2c2e;
+  --popover-foreground: #ffffff;
+  --primary: #0a68d4;
+  --primary-foreground: #ffffff;
+  --tint: #4da3ff;
+  --secondary: #2c2c2e;
+  --secondary-foreground: #ffffff;
+  --muted: rgba(120, 120, 128, 0.24);
+  --muted-foreground: #aeaeb2;
+  --accent: rgba(120, 120, 128, 0.24);
+  --accent-foreground: #ffffff;
+  --destructive: #ff6961;
+  --entrada: #3ddc6b;
+  --aviso: #ffb340;
+  --success: #30d158;
+  --trilho: rgba(120, 120, 128, 0.32);
+  --border: rgba(84, 84, 88, 0.6);
+  --input: rgba(120, 120, 128, 0.32);
+  --ring: #4da3ff;
+  --chart-1: #4da3ff;
+  --chart-2: #3ddc6b;
+  --chart-3: #ffb340;
+  --chart-4: #c68bff;
+  --chart-5: #5fd8e6;
+  --serie-entrada: #3d8fe6;
+  --serie-saida: #d07508;
+  --sidebar: #161618;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #0a68d4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(120, 120, 128, 0.24);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(84, 84, 88, 0.5);
+  --sidebar-ring: #4da3ff;
+  --barra: rgba(22, 22, 24, 0.8);
+  --barra-solida: #161618;
+  --segmento: #636366;
+}
+
+@theme inline {
+  /* San Francisco nos aparelhos Apple; Inter (empacotada, sem CDN) no Windows e no Android. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  /* números de dinheiro: SF Pro Rounded quando existe */
+  --font-rounded: ui-rounded, "SF Pro Rounded", -apple-system, "Inter Variable", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-tint: var(--tint);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-entrada: var(--entrada);
+  --color-aviso: var(--aviso);
+  --color-success: var(--success);
+  --color-trilho: var(--trilho);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-barra: var(--barra);
+  --color-barra-solida: var(--barra-solida);
+  --color-segmento: var(--segmento);
+  /* curvas da Apple */
+  --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-apple-saida: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    color-scheme: light dark;
+  }
+  /* sem "elástico" na página só com mouse; no toque fica o comportamento nativo */
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    font-feature-settings: "cv11", "ss01";
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* materiais translúcidos das barras; sem suporte ou com transparência reduzida: cor sólida */
+  .material-barra {
+    background-color: var(--barra-solida);
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    .material-barra {
+      background-color: var(--barra);
+      backdrop-filter: saturate(180%) blur(20px);
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .material-barra {
+      background-color: var(--barra-solida);
+      backdrop-filter: none;
+    }
+  }
+  .numeros {
+    font-variant-numeric: tabular-nums;
+  }
+  .pb-seguro {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-seguro {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fora das camadas de propósito: quem hospeda a página (ex.: a demonstração no claude.ai) pode
+   injetar estilos sem camada, como "body{background:#fff;color:#000}" e "color-scheme:light", que
+   venceriam as regras de @layer base e quebrariam o tema escuro. Estas vencem sempre. */
+:root:not(.dark) { color-scheme: light; }
+:root.dark { color-scheme: dark; }
+html body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.35;
+}

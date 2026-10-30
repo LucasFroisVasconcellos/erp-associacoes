@@ -1,0 +1,45 @@
+# Libera para produção SÓ o que passou no CI.
+# O Cloudflare Pages publica a branch `producao` (não a `main`). Este workflow roda quando o
+# CI termina; se foi verde e veio de um push na `main`, avança a `producao` até aquele commit.
+# Segurança:
+#  - nenhum token do Cloudflare no GitHub (quem publica é a integração do Cloudflare);
+#  - permissão de escrita só neste job, só no conteúdo do repositório;
+#  - o commit vem do próprio evento (push na main deste repositório), passado por variável
+#    de ambiente, nunca interpolado no script;
+#  - só avança (fast-forward): um CI antigo que termine depois de um novo é recusado pelo git,
+#    então nunca volta a produção para uma versão anterior sem querer;
+#  - actions fixadas por SHA.
+name: Liberar para produção
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: liberar-producao
+  cancel-in-progress: false
+
+jobs:
+  liberar:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    env:
+      COMMIT: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      - name: Conferir que o commit é da main
+        run: |
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "$COMMIT" origin/main || { echo "::error::commit $COMMIT não está na main"; exit 1; }
+      - name: Avançar a branch producao (só fast-forward)
+        run: git push origin "$COMMIT:refs/heads/producao"

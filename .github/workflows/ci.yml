@@ -1,0 +1,89 @@
+# CI: tipos, testes (unidade + banco real), build de produção auditada e varredura de segredos.
+# Segurança do próprio CI:
+#  - actions fixadas por SHA de commit (a tag fica só no comentário);
+#  - GITHUB_TOKEN só com leitura; nenhum segredo é usado;
+#  - só roda em push/pull_request (nunca pull_request_target com código de fora);
+#  - npm ci com o lockfile e ignore-scripts (do .npmrc).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust # banco descartável do job, só com dados fictícios
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      # valores fictícios só para a build de produção ser gerada e auditada
+      VITE_SUPABASE_URL: https://projeto-ficticio.supabase.co
+      VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ficticia_para_ci
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Atualizar npm (min-release-age exige 11.10+; versão fixa, já fora da quarentena)
+        run: npm install -g npm@11.21.0 --ignore-scripts
+      - name: Instalar dependências (lockfile exato, sem scripts)
+        run: npm ci
+      - name: Auditoria de dependências
+        run: npm audit --audit-level=high
+      - name: Varredura de segredos
+        run: npm run segredos
+      - name: Tipos
+        run: npm run typecheck
+      - name: Testes (unidade + banco)
+        run: npm run test:all
+      - name: Build de produção
+        run: npm run build
+      - name: Auditar a build (sem source map, sem demo, sem segredo, com CSP)
+        run: npm run verificar-build
+
+  navegador:
+    # Passeio visual, acessibilidade (axe) e fluxos (exportar auditoria, CAPTCHA) com os
+    # cabeçalhos reais do _headers. Sem segredos; Turnstile e Supabase são imitados.
+    needs: verificar
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Atualizar npm (versão fixa)
+        run: npm install -g npm@11.21.0 --ignore-scripts
+      - name: Instalar dependências
+        run: npm ci
+      - name: Playwright (versão fixa) e Chromium
+        run: |
+          python3 -m pip install --user --break-system-packages playwright==1.56.0  # PEP 668 no Ubuntu 24.04
+          python3 -m playwright install --with-deps chromium
+      - name: Testes no navegador
+        run: bash tests/e2e/rodar.sh
+

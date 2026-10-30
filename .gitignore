@@ -1,0 +1,56 @@
+# Segredos e configuração local — nunca vão para o GitHub
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+supabase/.temp/
+supabase/.branches/
+
+# Bancos, dumps e backups — o banco nunca fica no repositório
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+*.backup
+*.bak
+backups/
+dumps/
+
+# Dados reais, exports e arquivos de clientes
+uploads/
+exports/
+comprovantes/
+*.ofx
+*.xlsx
+*.xls
+*.csv
+!tests/**/fixtures/*.csv
+prints/
+*.log
+logs/
+
+# Build e dependências
+node_modules/
+dist/
+dist-*/
+coverage/
+test-results/
+playwright-report/
+.vite/
+
+# Sistema
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+tests/e2e/saida/
+
+# mapa do código (Graphify), gerado localmente
+graphify-out/
+
+# OCR copiado de node_modules a cada build (scripts/copiar-ocr.mjs)
+public/ocr/

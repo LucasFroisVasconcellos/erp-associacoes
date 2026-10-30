@@ -1,0 +1,58 @@
+
+export interface Ajuda { titulo: string; serve: string; passos: string[]; dica?: string }
+
+export const AJUDA: Record<string, Ajuda> = {
+  '/': { titulo: 'Início', serve: 'Resumo do dia: saldo da Associação Exemplo, o que entrou e saiu no mês, avisos e o que precisa da sua atenção.',
+    passos: ['Use os atalhos para lançar uma entrada ou saída, criar tarefa ou evento.', 'Toque na lupa para achar qualquer coisa no sistema.', 'O sininho mostra os avisos da diretoria.'],
+    dica: 'O botão + azul aparece em todas as telas: é o jeito mais rápido de lançar um gasto com a foto do comprovante.' },
+  '/dinheiro': { titulo: 'Dinheiro', serve: 'Todas as entradas e saídas da Associação Exemplo, contas a pagar e a receber e pedidos de reembolso.',
+    passos: ['Toque em + para lançar: tire a foto do comprovante e o sistema preenche o resto.', 'Use os atalhos do topo para conciliar o extrato, fechar o mês, ver o orçamento e importar arquivos.', 'Lançamento com etiqueta vermelha está sem comprovante: anexe ou justifique antes de fechar o mês.'],
+    dica: 'Pagou do seu bolso? Marque "Paguei do meu bolso" no lançamento e a tesouraria decide o reembolso.' },
+  '/dinheiro/conciliacao': { titulo: 'Conciliação', serve: 'Confere o extrato do banco com os lançamentos: cada linha do banco precisa de um lançamento ou de um motivo para ficar de fora.',
+    passos: ['Baixe o extrato no app do banco (OFX, CSV ou PDF) e toque em Importar.', 'Aceite as sugestões sem dúvida de uma vez.', 'Linha sem lançamento? Toque em "Criar lançamento" e escolha a categoria.'],
+    dica: 'OFX é o formato mais confiável. Importar o mesmo arquivo duas vezes não duplica nada.' },
+  '/dinheiro/importar': { titulo: 'Importar e contador', serve: 'Traz a contabilidade antiga (planilhas), o plano de contas e o balancete do contador, e compara com o que a diretoria lançou.',
+    passos: ['Comece pelo plano de contas que o contador manda.', 'Ligue cada categoria a uma conta do contador na aba "Comparar com o contador".', 'Importe as planilhas antigas: a prévia mostra o que vai entrar antes de gravar.'],
+    dica: 'Antes de importar uma planilha antiga, apague colunas com CPF, telefone ou dados de saúde.' },
+  '/dinheiro/orcamento': { titulo: 'Orçamento do ano', serve: 'Quanto a Associação Exemplo planeja receber e gastar no ano em cada categoria, e quanto já foi.',
+    passos: ['Toque em "Definir valores" e use "Sugerir pelo ano anterior" para começar rápido.', 'Acompanhe as barras: a linha fina mostra quanto do ano já passou.', 'Alerta laranja: gasto acima do ritmo. Vermelho: passou do previsto.'] },
+  '/dinheiro/fechamento': { titulo: 'Fechamento do mês', serve: 'Checklist que garante que o mês está certo antes de mandar ao contador. Mês fechado não muda mais.',
+    passos: ['Resolva os itens que bloqueiam: comprovantes e extrato conciliado.', 'Confirme que conferiu o extrato e feche.', 'Depois, envie os arquivos ao contador em Documentos.'] },
+  '/dinheiro/contas': { titulo: 'Contas', serve: 'As contas da Associação Exemplo: banco, caixinha e contas de projeto, com saldo inicial.',
+    passos: ['Cadastre cada conta com o saldo e a data de início.', 'Planilhas antigas só entram a partir da data do saldo inicial: escolha uma data antiga o bastante.'] },
+  '/dinheiro/cadastros': { titulo: 'Categorias e tipos de gasto', serve: 'Como o dinheiro é organizado nos relatórios, no orçamento e na transparência.',
+    passos: ['Crie categorias com nomes genéricos (ex.: Transporte, Material esportivo).', 'Nunca use nome de pessoa ou de doença em categoria: o nome pode ir para a página pública.'] },
+  '/analises': { titulo: 'Previsão e análises', serve: 'Mostra para onde o caixa vai nos próximos meses, simula cenários e aponta o que vale conferir.',
+    passos: ['Caixa: veja o saldo previsto e o fôlego.', 'Adicione cenários "e se" para planejar (nada é gravado).', 'Baixe o relatório do mês, do trimestre ou do ano em PDF.'],
+    dica: 'Os alertas são sinais para conferir, nunca acusações.' },
+  '/transparencia/gestao': { titulo: 'Transparência', serve: 'Prestação de contas pública. A diretoria escolhe o período, confere a prévia e publica só números agregados.',
+    passos: ['Escolha o período (de/até).', 'Confira a prévia: é exatamente o que o público vai ver.', 'Publique. Se algo estiver errado, retire do ar com o motivo e publique de novo.'],
+    dica: 'Confira os nomes das categorias antes de publicar: eles aparecem para o público.' },
+  '/relatorios': { titulo: 'Relatórios', serve: 'Exporta os lançamentos de um período em PDF ou planilha (CSV) para quem pedir.', passos: ['Escolha o período e o formato.', 'Os relatórios mostram só o que você tem permissão de ver.'] },
+  '/recursos': { titulo: 'Recursos', serve: 'De onde vem o dinheiro grande da Associação Exemplo e como ele é usado.', passos: ['Verbas: editais, emendas e patrocínios previstos.', 'Projetos: rubricas, execução e prestação de contas.', 'Captação: patrocinadores, doações e rifas.', 'Filiações: federações e confederações.'] },
+  '/verbas': { titulo: 'Verbas previstas', serve: 'Cada verba que a Associação Exemplo pediu ou vai receber: origem, parcelas, regras e documentos.',
+    passos: ['Cadastre a verba desde a ideia.', 'Mude a situação conforme avança (pedido, aprovado, formalizado…).', 'Registre cada parcela recebida: ela entra na previsão de caixa.'] },
+  '/projetos': { titulo: 'Projetos', serve: 'Projetos com verba própria: orçamento por rubrica, ritmo de gasto e prestação de contas pronta.',
+    passos: ['Toque em “Novo projeto” (projeto próprio) ou formalize uma verba aprovada em Verbas.', 'Cadastre as rubricas com o valor previsto.', 'Ligue os gastos ao projeto e à rubrica.', 'Gere a prestação de contas em PDF ou CSV no fim.'] },
+  '/captacao': { titulo: 'Captação', serve: 'Funil de patrocínio, apoiadores do Imposto de Renda, contrapartidas, rifas e eventos, e recibos de doação.',
+    passos: ['Cadastre cada oportunidade e o próximo passo.', 'Registre as contrapartidas com foto quando entregar.', 'Emita o recibo de doação numerado em PDF.'] },
+  '/filiacoes': { titulo: 'Filiações', serve: 'Federações, confederações e outros vínculos: situação, documentos exigidos e contribuição.', passos: ['Cadastre a filiação e a validade.', 'O sistema avisa antes de vencer e mostra verbas em risco.'] },
+  '/equipe': { titulo: 'Equipe', serve: 'Atletas, associados, viagens e materiais da Associação Exemplo.', passos: ['Pessoas: cadastro, mensalidades e presença nos treinos.', 'Viagens: delegação, quartos e acerto.', 'Patrimônio: equipamentos e empréstimos.'] },
+  '/pessoas': { titulo: 'Pessoas', serve: 'Atletas e associados: cadastro, documentos com validade, autorizações e mensalidades.',
+    passos: ['Cadastre a pessoa e a categoria de sócio.', 'No atleta: ficha esportiva e foto 3x4 (a foto pede a autorização de imagem antes).', 'Mensalidades: gere as do mês e cobre pelo Pix. Recebeu? Toque na mensalidade → Dar baixa → Recebi agora.'],
+    dica: 'Dados de saúde ficam numa área separada, só para quem tem permissão.' },
+  '/viagens': { titulo: 'Viagens', serve: 'Viagens e competições: delegação, quartos, acessibilidade, adiantamento e acerto.', passos: ['Cadastre a viagem e monte a delegação.', 'Ligue o adiantamento e os gastos.', 'Só dá para encerrar com o acerto feito.'] },
+  '/patrimonio': { titulo: 'Patrimônio', serve: 'Equipamentos da Associação Exemplo, empréstimos com termo e manutenção.', passos: ['Cadastre o bem com número de patrimônio.', 'Empreste com o termo e registre a devolução.'] },
+  '/organizacao': { titulo: 'Organização', serve: 'Agenda, tarefas, documentos e acessos da diretoria.', passos: ['Agenda: treinos, jogos, reuniões e prazos.', 'Tarefas: quem faz o quê e até quando.', 'Documentos: certidões, atas e arquivos do contador.'] },
+  '/agenda': { titulo: 'Agenda', serve: 'Eventos e prazos da Associação Exemplo. Prazos de verbas, documentos e viagens entram sozinhos.', passos: ['Toque no calendário com + para criar um evento.', 'Exporte para o calendário do celular pelo menu •••.'] },
+  '/tarefas': { titulo: 'Tarefas', serve: 'Quem faz o quê e até quando, com checklist e comentários.', passos: ['Crie a tarefa com responsável e prazo.', 'Use modelos para tarefas que se repetem (ex.: viagem para competição).'] },
+  '/documentos': { titulo: 'Documentos', serve: 'Arquivos do contador por mês e documentos da entidade (certidões, estatuto, atas).', passos: ['Guarde aqui o que o contador mandar.', 'Em Governança: certidões com validade, mandatos, reuniões e votações.'] },
+  '/acessos': { titulo: 'Acessos', serve: 'Quem da diretoria usa o sistema e o que cada um pode ver e fazer.', passos: ['Convide pelo e-mail, ou libere quem pediu acesso pela tela de entrada (Pedidos de acesso).', 'Ajuste o que cada pessoa vê: use “Todas” num módulo, um perfil pronto ou um modelo que você cadastrou; dados de saúde só um a um.', 'A trilha de auditoria mostra quem fez cada coisa.'],
+    dica: 'Perdeu o celular? Em Ajustes, “Sair de todos os aparelhos”.' },
+  '/avisos': { titulo: 'Avisos', serve: 'Recados da diretoria com confirmação de leitura.', passos: ['Escreva o aviso e escolha quem recebe.', 'Veja quem já leu.'] },
+};
+
+export function ajudaDa(rota: string): Ajuda | null {
+  const chave = Object.keys(AJUDA).filter((k) => (k === '/' ? rota === '/' : rota === k || rota.startsWith(k + '/'))).sort((a, b) => b.length - a.length)[0];
+  return chave ? AJUDA[chave]! : null;
+}
